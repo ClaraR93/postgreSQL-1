@@ -22,6 +22,13 @@ class Programmer(base):
     nationality = Column(String)
     famous_for = Column(String)
 
+class Places(base):
+    __tablename__ = "Places"
+    id = Column(Integer, primary_key=True)
+    country = Column(String)
+    capital_city = Column(String)
+    population = Column(Integer, primary_key=False)
+
 
 # instead of connecting to the database directly, we will ask for a session
 # create a new instance of sessionmaker, then point to our engine (the db)
@@ -89,14 +96,53 @@ clara_reynolds = Programmer (
     famous_for = "Being kl"
 )
 
+czech = Places (
+    country = "Czech Republic",
+    capital_city = "Prague",
+    population = 200000000
+)
+
 # session.add(ada_lovelace)
 # session.add(alan_turing)
 # session.add(grace_hoper)
 # session.add(margaret_hamilton)
 # session.add(bill_gates)
 # session.add(tim_berners_lee)
-session.add(clara_reynolds)
+# session.add(clara_reynolds)
 
+
+
+# programmer = session.query(Programmer).filter_by(id=9).first() 
+# programmer.famous_for = "World President"
+
+
+
+# people = session.query(Programmer)
+# for person in people:
+#    if person.gender == "F":
+#        person.gender = "Female"
+#    elif person.gender == "M":
+#        person.gender = "Male"
+#    else: 
+#        print("Gender not defined")
+#    session.commit()
+
+# fname = input("Enter a name: ")
+# lname = input("Enter a last name: ")
+# programmer = session.query(Programmer).filter_by(first_name=fname, last_name=lname).first()
+# defensive programming
+# if programmer is not None:
+#    print("Programmer Found: ", programmer.first_name + " " + programmer.last_name)
+#    confirmation = input("Are you sure you want to delete this record? (y/n) ")
+#    if confirmation.lower() == "y":
+#        session.delete(programmer)
+#        session.commit()
+#    else:
+#        print("Programmer has not been deleted")
+# else:
+#   print("No records found")
+
+session.add(czech)
 session.commit()
 
 programmers = session.query(Programmer)
@@ -107,6 +153,16 @@ for programmer in programmers:
         programmer.gender,
         programmer.nationality,
         programmer.famous_for,
+        sep=" | "
+    )
+
+places = session.query(Places)
+for place in places:
+    print(
+        place.id,
+        place.country, 
+        place.capital_city,
+        place.population,
         sep=" | "
     )
 
